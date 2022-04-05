@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.newbee.mall.dao.NewBeeMallStarMapper">
+    <select id="selectByUserId" resultType="java.lang.Long">
+        select
+        goodId
+        from tb_newbee_mall_star
+        where userId = #{userId}
+    </select>
+
+    <select id="selectByUserIdAndGoodId" resultType="java.lang.Integer">
+        select starId
+        from tb_newbee_mall_star
+        where goodId=#{goodId} and userId=#{userId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tb_newbee_mall_star where starId=#{starId}
+    </delete>
+    <insert id="insertStar" parameterType="ltd.newbee.mall.entity.NewBeeMallStars">
+        insert into tb_newbee_mall_star (starId,goodId,userId)
+        values (#{starId},#{goodId},#{userId})
+    </insert>
+</mapper>

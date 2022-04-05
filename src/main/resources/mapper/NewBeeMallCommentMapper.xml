@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.newbee.mall.dao.NewBeeMallCommentMapper">
+    <insert id="insertComment" parameterType="ltd.newbee.mall.entity.NewBeeMallComment">
+        insert into tb_newbee_mall_comment (commentId,userId,goodsId,context,point,createTime)
+        values (#{commentId},#{userId},#{goodsId},#{context},#{point},#{createTime})
+    </insert>
+    <select id="selectByGoodsId" parameterType="long" resultType="ltd.newbee.mall.entity.NewBeeMallComment">
+        select
+           commentId,userId,goodsId,context,point,createTime
+        from tb_newbee_mall_comment
+        where goodsId = #{goodsId}
+    </select>
+</mapper>
