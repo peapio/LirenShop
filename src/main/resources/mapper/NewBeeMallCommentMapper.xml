@@ -11,4 +11,9 @@
         from tb_newbee_mall_comment
         where goodsId = #{goodsId}
     </select>
+    <delete id="deleteComment" parameterType="long">
+        delete
+        from tb_newbee_mall_comment
+        where commentId = #{commentId}
+    </delete>
 </mapper>

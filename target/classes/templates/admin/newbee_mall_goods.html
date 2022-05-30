@@ -26,6 +26,50 @@
         border-width: 1px;
         border-color: rgb(206, 212, 218);
     }
+    .comment .comment-body {
+        padding: 10px;
+        border: solid #dfdfdf 1px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, .7);
+        -moz-box-shadow: 4px 4px 10px #dcddde;
+        -webkit-box-shadow: 4px 4px 10px #dcddde;
+        box-shadow: 4px 4px 10px #dcddde;
+    }
+
+    .comment {
+        list-style-type: none;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        -webkit-padding-start: 0px;
+    }
+
+
+
+    .content {
+        padding: 10px;
+        border-bottom: 1px dotted #ddd;
+        font-size: 14px;
+    }
+
+    div.timer {
+        background-color: rgba(255, 255, 255, .7);
+        color: #999aaa;
+        font-size: 12px;
+        margin-right: 4px;
+        display: inline-block;
+    }
+    .deleteComment {
+        float: right;
+        font-size: large;
+        margin-left: 20px;
+        cursor: pointer;
+    }
+
+    i {
+        margin: auto 3px;
+    }
 </style>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -55,28 +99,19 @@
                             <button class="btn btn-info" onclick="editGoods()"><i
                                     class="fa fa-pencil-square-o"></i>&nbsp;修改商品
                             </button>
-<!--                            <button class="btn btn-success" onclick="putUpGoods()"><i-->
-<!--                                    class="fa fa-arrow-up"></i>&nbsp;上架商品-->
-<!--                            </button>-->
-<!--                            <button class="btn btn-danger" onclick="putDownGoods()"><i-->
-<!--                                    class="fa fa-arrow-down"></i>&nbsp;下架商品-->
-<!--                            </button>-->
-
-
                             <button class="btn btn-danger" onclick="deleteGoods()"><i
                                     class="fa fa-trash-o"></i>&nbsp;删除商品
                             </button>
-
-                            <form class="form-inline ml-3">
-                                <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-navbar" type="search" placeholder="搜索" aria-label="Search">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-navbar" type="submit">
-                                            <i class="fa fa-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+<!--                            <form class="form-inline ml-3">-->
+<!--                                <div class="input-group input-group-sm">-->
+<!--                                    <input id="keyword" class="form-control form-control-navbar" type="search" placeholder="搜索" aria-label="Search">-->
+<!--                                    <div class="input-group-append">-->
+<!--                                        <button class="btn btn-navbar" type="submit" onclick="searchGoods()">-->
+<!--                                            <i class="fa fa-search"></i>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </form>-->
 
                         </div>
                         <table id="jqGrid" class="table table-bordered">
@@ -86,7 +121,35 @@
                 </div>
             </div><!-- /.container-fluid -->
         </div>
+        <div class="content">
+            <!-- 模态框（Modal）评论管理-->
+            <div class="modal fade" id="commentItemModal" tabindex="-1" role="dialog"
+                 aria-labelledby="orderItemModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title" id="orderItemModalLabel">Modal</h6>
+                        </div>
+                        <div class="modal-body">
+                            <form id="##">
+                                <div class="form-group">
+                                    <ul id="commentItemString" class="control-label">
+
+
+                                    </ul>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal -->
+        </div>
     </div>
+
     <!-- /.content-wrapper -->
     <!-- 引入页脚footer-fragment -->
     <div th:replace="admin/footer::footer-fragment"></div>

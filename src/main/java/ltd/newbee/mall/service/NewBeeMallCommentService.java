@@ -8,4 +8,6 @@ import java.util.List;
 public interface NewBeeMallCommentService {
     String addComment(NewBeeMallComment newBeeMallComment);
     List<NewBeeMallCommentVO> showComment(long goodsId);
+    boolean isOrdered(long userId,long goodsId);
+    boolean deleteComment(long commentId);
 }

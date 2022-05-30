@@ -6,8 +6,11 @@
 </head>
 
 <link th:href="@{/mall/css/bootstrap-modal.css}" rel="stylesheet">
-<link rel="stylesheet" th:href="@{/mall/styles/comment.css}">
+<link rel="shortcut icon" th:href="@{/admin/dist/img/favicon.ico}"/>
+<link rel="stylesheet" th:href="@{/admin/dist/css/font-awesome.min.css}">
+<!--<link rel="stylesheet" th:href="@{/mall/styles/comment.css}">-->
 
+<link rel="stylesheet" href="/mall/styles/comment.css">
 <body>
 <header th:replace="mall/header::header-fragment"></header>
 
@@ -71,7 +74,7 @@
         <div class="clear"></div>
     </div>
     <!-- 这里使用的是 th:utext 标签，用 th:text 不会解析 html，用 th:utext 会解析 html -->
-    <ul class="nav nav-tabs" id="myTab">
+    <ul class="nav nav-tabs" id="myTab" style="width: 1000px; margin:0 auto">
         <li class="active"><a href="#detail1" data-toggle="tab">介绍</a></li>
         <li><a href="#comment" data-toggle="tab">评论</a></li>
     </ul>
@@ -83,35 +86,77 @@
 
         </div>
         <div class="tab-pane" id="comment">
-<!--            <th:block th:if="${goodsComment.isOrdered}">-->
-                <div class="quiz" th:if="${isOrdered}">
-                    <h3>我要评论</h3>
-                    <div class="quiz_content">
-                        <div class="goods-comm">
-                            <div class="goods-comm-stars">
-                                <span class="star_l">满意度：</span>
-                                <div id="rate-comm-1" class="rate-comm"></div>
-                                <input type="text" id="StarNum" style="display: none">
-                            </div>
+            <!--            <th:block th:if="${goodsComment.isOrdered}">-->
+            <div class="quiz" th:if="${isOrdered}">
+                <h3>我要评论</h3>
+                <div class="quiz_content">
+                    <div class="goods-comm">
+                        <div class="goods-comm-stars">
+                            <span class="star_l">满意度：</span>
+                            <div id="rate-comm-1" class="rate-comm"></div>
+                            <input type="text" id="StarNum" style="display: none">
                         </div>
-
-                        <div class="l_text">
-                            <label class="m_flo">内 容：</label>
-                            <textarea name="context" id="context" class="text"></textarea>
-                            <span class="tr">字数限制为5-200个</span>
-                        </div>
-                        <input class="btm" type="button" th:onclick="'addComment('+${goodsDetail.goodsId}+')'">
                     </div>
+
+                    <div class="l_text">
+                        <label class="m_flo">内 容：</label>
+                        <textarea name="context" id="context" class="text"></textarea>
+                        <span class="tr">字数限制为5-200个</span>
+                    </div>
+                    <input class="btm" type="button" th:onclick="'addComment('+${goodsDetail.goodsId}+')'">
                 </div>
-<!--            </th:block>-->
-            <div>
-                <ul class="breadcrumb" th:each="goodsComment : ${goodsComments}">
-                    <li th:text="${goodsComment.nickName}"></li>
-                    <li th:text="${goodsComment.context}"></li>
-                    <li th:text="${goodsComment.createTime}"></li>
-                </ul>
             </div>
-            <!--quiz_content end-->
+            <div class="quiz" th:unless="${isOrdered}">
+                <div class="quiz_content">
+                    <div class="goods-comm">
+                        <div class="goods-comm-stars">
+                            <span class="star_l">满意度：</span>
+                            <div id="rate-comm-1" class="rate-comm"></div>
+                            <input type="text" id="StarNum" style="display: none">
+                        </div>
+                    </div>
+
+                    <div class="l_text">
+                        <label class="m_flo">内 容：</label>
+                        <textarea name="context" id="context" class="text" disabled placeholder="先购买商品再评论吧！"></textarea>
+                        <span class="tr">字数限制为5-200个</span>
+                    </div>
+                    <input class="btm" type="button" th:onclick="'addComment('+${goodsDetail.goodsId}+')'">
+                </div>
+            </div>
+            <!--            </th:block>-->
+            <div class="container">
+                <!-- 评论 -->
+                <div class="commentList">
+                    <h3><i class="fa fa-comments-o fa-fw"></i><em th:text="${goodsComments.size()}"></em>条评论~~~</h3>
+                    <ul class="comment" th:each="goodsComment : ${goodsComments}">
+                        <li>
+                            <div class="comment-body" id="comment-1">
+                                <div class="cheader">
+                                    <strong th:text="${goodsComment.nickName}">张三</strong>
+                                    <div style="float: right">
+                                        <i class="fa fa-clock-o fa-fw"></i>
+                                        <div class="timer" th:text="${goodsComment.createTime}">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <div class="content" th:text="${goodsComment.context}">
+                                    </div>
+                                    <div class="StarCnt" style="float: left">
+                                        <div th:each="i:${#numbers.sequence(1,goodsComment.StarCnt)}"
+                                             style="font-size: medium;color: #f40;float:right">
+                                            <i class="fa fa-star fa-fw"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 

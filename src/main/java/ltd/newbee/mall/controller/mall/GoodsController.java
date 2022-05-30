@@ -89,7 +89,7 @@ public class GoodsController {
         }
         NewBeeMallGoodsDetailVO goodsDetailVO = new NewBeeMallGoodsDetailVO();
         List<NewBeeMallCommentVO> commentVOS = newBeeMallCommentService.showComment(goodsId);
-        boolean isOrdered = false;
+        boolean isOrdered = newBeeMallCommentService.isOrdered(user.getUserId(),goodsId);
         BeanUtil.copyProperties(goods, goodsDetailVO);
         goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));
         request.setAttribute("goodsDetail", goodsDetailVO);

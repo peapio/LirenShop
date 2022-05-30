@@ -218,4 +218,106 @@ body {
     font-weight: bold;
     padding-left: 10px;
     float: left;
-} 
+}
+
+em {
+    font-family: "Georgia";
+    font-size: 24px;
+    font-weight: bold;
+    color: #f54343;
+}
+
+
+
+#comment-form-btn {
+    clear: both;
+    margin-bottom: 10px;
+    margin-top: 50px;
+}
+
+.commentList {
+    /*margin-top: 20px;*/
+    width:800px;
+    margin: 20px auto;
+}
+
+.comment-post .cancel-reply {
+    float: right;
+    margin: -30px 0 0 0;
+}
+
+.comment-post .cancel-reply a,
+.comment-reply {
+    /*color: #0c0;*/
+    text-decoration: none;
+}
+
+.comment li {
+    margin-bottom: 15px;
+}
+
+.comment .comment-body {
+    padding: 10px;
+    border: solid #dfdfdf 1px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, .7);
+    -moz-box-shadow: 4px 4px 10px #dcddde;
+    -webkit-box-shadow: 4px 4px 10px #dcddde;
+    box-shadow: 4px 4px 10px #dcddde;
+}
+
+.comment {
+    list-style-type: none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0px;
+}
+
+
+
+.content {
+    padding: 10px;
+    border-bottom: 1px dotted #ddd;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+.timer {
+    background-color: rgba(255, 255, 255, .7);
+    color: #999aaa;
+    font-size: 12px;
+    margin-right: 4px;
+    display: inline-block;
+}
+
+
+
+
+
+i {
+    margin: auto 3px;
+}
+
+
+/* icons start */
+.icons {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    top: 3px;
+}
+
+
+textarea{outline:none;resize:none;}
+
+/* icons end */

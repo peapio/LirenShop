@@ -10,14 +10,8 @@ package ltd.newbee.mall.service.impl;
 
 import ltd.newbee.mall.common.*;
 import ltd.newbee.mall.controller.vo.*;
-import ltd.newbee.mall.dao.NewBeeMallGoodsMapper;
-import ltd.newbee.mall.dao.NewBeeMallOrderItemMapper;
-import ltd.newbee.mall.dao.NewBeeMallOrderMapper;
-import ltd.newbee.mall.dao.NewBeeMallShoppingCartItemMapper;
-import ltd.newbee.mall.entity.NewBeeMallGoods;
-import ltd.newbee.mall.entity.NewBeeMallOrder;
-import ltd.newbee.mall.entity.NewBeeMallOrderItem;
-import ltd.newbee.mall.entity.StockNumDTO;
+import ltd.newbee.mall.dao.*;
+import ltd.newbee.mall.entity.*;
 import ltd.newbee.mall.service.NewBeeMallOrderService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.NumberUtil;
@@ -46,12 +40,24 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
     private NewBeeMallShoppingCartItemMapper newBeeMallShoppingCartItemMapper;
     @Autowired
     private NewBeeMallGoodsMapper newBeeMallGoodsMapper;
+    @Autowired
+    private MallUserMapper mallUserMapper;
 
     @Override
     public PageResult getNewBeeMallOrdersPage(PageQueryUtil pageUtil) {
         List<NewBeeMallOrder> newBeeMallOrders = newBeeMallOrderMapper.findNewBeeMallOrderList(pageUtil);
+
+        List<NewBeeMallOrderManVO> newBeeMallOrderManVOS = new ArrayList<>();
+        for (NewBeeMallOrder newBeeMallOrder : newBeeMallOrders) {
+            NewBeeMallOrderManVO newBeeMallOrderManVO = new NewBeeMallOrderManVO();
+            BeanUtil.copyProperties(newBeeMallOrder,newBeeMallOrderManVO);
+            Long userId = newBeeMallOrder.getUserId();
+            MallUser mallUser = mallUserMapper.selectByPrimaryKey(userId);
+            BeanUtil.copyProperties(mallUser,newBeeMallOrderManVO);
+            newBeeMallOrderManVOS.add(newBeeMallOrderManVO);
+        }
         int total = newBeeMallOrderMapper.getTotalNewBeeMallOrders(pageUtil);
-        PageResult pageResult = new PageResult(newBeeMallOrders, total, pageUtil.getLimit(), pageUtil.getPage());
+        PageResult pageResult = new PageResult(newBeeMallOrderManVOS, total, pageUtil.getLimit(), pageUtil.getPage());
         return pageResult;
     }
 
@@ -396,7 +402,8 @@ public class NewBeeMallOrderServiceImpl implements NewBeeMallOrderService {
     public List<NewBeeMallOrderItemVO> getOrderItems(Long id) {
         NewBeeMallOrder newBeeMallOrder = newBeeMallOrderMapper.selectByPrimaryKey(id);
         if (newBeeMallOrder != null) {
-            List<NewBeeMallOrderItem> orderItems = newBeeMallOrderItemMapper.selectByOrderId(newBeeMallOrder.getOrderId());
+            Long orderId = newBeeMallOrder.getOrderId();
+            List<NewBeeMallOrderItem> orderItems = newBeeMallOrderItemMapper.selectByOrderId(orderId);
             //获取订单项数据
             if (!CollectionUtils.isEmpty(orderItems)) {
                 List<NewBeeMallOrderItemVO> newBeeMallOrderItemVOS = BeanUtil.copyList(orderItems, NewBeeMallOrderItemVO.class);
