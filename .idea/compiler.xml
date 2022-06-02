@@ -7,16 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="newbee-mall" />
+        <module name="liren-mall" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="newbee-mall" target="1.8" />
+      <module name="liren-mall" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="newbee-mall" options="-parameters" />
+      <module name="liren-mall" options="-parameters" />
     </option>
   </component>
 </project>

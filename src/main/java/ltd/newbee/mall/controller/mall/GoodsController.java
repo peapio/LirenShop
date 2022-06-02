@@ -1,25 +1,16 @@
-/**
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2019-2020 十三 all rights reserved.
- * 版权所有，侵权必究！
- */
 package ltd.newbee.mall.controller.mall;
 
 import ltd.newbee.mall.common.Constants;
-import ltd.newbee.mall.common.NewBeeMallException;
+import ltd.newbee.mall.common.MallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
-import ltd.newbee.mall.controller.vo.NewBeeMallCommentVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallGoodsDetailVO;
-import ltd.newbee.mall.controller.vo.NewBeeMallUserVO;
+import ltd.newbee.mall.controller.vo.CommentVO;
+import ltd.newbee.mall.controller.vo.GoodsDetailVO;
+import ltd.newbee.mall.controller.vo.UserVO;
 import ltd.newbee.mall.controller.vo.SearchPageCategoryVO;
-import ltd.newbee.mall.entity.NewBeeMallComment;
-import ltd.newbee.mall.entity.NewBeeMallGoods;
-import ltd.newbee.mall.service.NewBeeMallCategoryService;
-import ltd.newbee.mall.service.NewBeeMallCommentService;
-import ltd.newbee.mall.service.NewBeeMallGoodsService;
+import ltd.newbee.mall.entity.LirenMallGoods;
+import ltd.newbee.mall.service.CategoryService;
+import ltd.newbee.mall.service.CommentService;
+import ltd.newbee.mall.service.GoodsService;
 import ltd.newbee.mall.util.BeanUtil;
 import ltd.newbee.mall.util.PageQueryUtil;
 import org.springframework.stereotype.Controller;
@@ -37,11 +28,11 @@ import java.util.Map;
 public class GoodsController {
 
     @Resource
-    private NewBeeMallGoodsService newBeeMallGoodsService;
+    private GoodsService goodsService;
     @Resource
-    private NewBeeMallCategoryService newBeeMallCategoryService;
+    private CategoryService categoryService;
     @Resource
-    private NewBeeMallCommentService newBeeMallCommentService;
+    private CommentService commentService;
 
     @GetMapping({"/search", "/search.html"})
     public String searchPage(@RequestParam Map<String, Object> params, HttpServletRequest request) {
@@ -52,7 +43,7 @@ public class GoodsController {
         //封装分类数据
         if (params.containsKey("goodsCategoryId") && !StringUtils.isEmpty(params.get("goodsCategoryId") + "")) {
             Long categoryId = Long.valueOf(params.get("goodsCategoryId") + "");
-            SearchPageCategoryVO searchPageCategoryVO = newBeeMallCategoryService.getCategoriesForSearch(categoryId);
+            SearchPageCategoryVO searchPageCategoryVO = categoryService.getCategoriesForSearch(categoryId);
             if (searchPageCategoryVO != null) {
                 request.setAttribute("goodsCategoryId", categoryId);
                 request.setAttribute("searchPageCategoryVO", searchPageCategoryVO);
@@ -73,23 +64,23 @@ public class GoodsController {
         params.put("goodsSellStatus", Constants.SELL_STATUS_UP);
         //封装商品数据
         PageQueryUtil pageUtil = new PageQueryUtil(params);
-        request.setAttribute("pageResult", newBeeMallGoodsService.searchNewBeeMallGoods(pageUtil));
+        request.setAttribute("pageResult", goodsService.searchNewBeeMallGoods(pageUtil));
         return "mall/search";
     }
 
     @GetMapping("/goods/detail/{goodsId}")
     public String detailPage(@PathVariable("goodsId") Long goodsId, HttpServletRequest request) {
         if (goodsId < 1) {
-            NewBeeMallException.fail("参数异常");
+            MallException.fail("参数异常");
         }
-        NewBeeMallUserVO user = (NewBeeMallUserVO) request.getSession().getAttribute(Constants.MALL_USER_SESSION_KEY);
-        NewBeeMallGoods goods = newBeeMallGoodsService.getNewBeeMallGoodsById(goodsId);
+        UserVO user = (UserVO) request.getSession().getAttribute(Constants.MALL_USER_SESSION_KEY);
+        LirenMallGoods goods = goodsService.getNewBeeMallGoodsById(goodsId);
         if (Constants.SELL_STATUS_UP != goods.getGoodsSellStatus()) {
-            NewBeeMallException.fail(ServiceResultEnum.GOODS_PUT_DOWN.getResult());
+            MallException.fail(ServiceResultEnum.GOODS_PUT_DOWN.getResult());
         }
-        NewBeeMallGoodsDetailVO goodsDetailVO = new NewBeeMallGoodsDetailVO();
-        List<NewBeeMallCommentVO> commentVOS = newBeeMallCommentService.showComment(goodsId);
-        boolean isOrdered = newBeeMallCommentService.isOrdered(user.getUserId(),goodsId);
+        GoodsDetailVO goodsDetailVO = new GoodsDetailVO();
+        List<CommentVO> commentVOS = commentService.showComment(goodsId);
+        boolean isOrdered = commentService.isOrdered(user.getUserId(),goodsId);
         BeanUtil.copyProperties(goods, goodsDetailVO);
         goodsDetailVO.setGoodsCarouselList(goods.getGoodsCarousel().split(","));
         request.setAttribute("goodsDetail", goodsDetailVO);
